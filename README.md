@@ -4,10 +4,10 @@ Arch Linux Install Script (or alis) installs unattended, automated and customize
 
 ----------------------
 
-# loadkeys es
-# curl -sL https://raw.githubusercontent.com/santiabella/alis/master/download.sh | bash
-# nano alis.conf
-# ./alis.sh
+loadkeys es
+curl -sL https://raw.githubusercontent.com/santiabella/alis/master/download.sh | bash
+nano alis.conf
+./alis.sh
 
 If you fork _alis_ repository you can host your own configuration and changes in your repository.
 
