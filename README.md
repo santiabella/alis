@@ -96,8 +96,8 @@ Internet connection is required, with wireless WIFI connection see <a href="http
 # curl -sL https://raw.githubusercontent.com/santiabella/alis/master/download.sh | bash     # Download alis scripts
 # # curl -sL https://bit.ly/2F3CATp | bash                                                 # Alternative download URL with URL shortener
 # ./alis-asciinema.sh     # (Optional) Start asciinema video recording
-# vim alis.conf           # Edit configuration and change variables values with your preferences (system configuration)
-# vim alis-packages.conf  # (Optional) Edit configuration and change variables values with your preferences (packages to install)
+# nano alis.conf           # Edit configuration and change variables values with your preferences (system configuration)
+# nano alis-packages.conf  # (Optional) Edit configuration and change variables values with your preferences (packages to install)
 #                         # (The preferred way to install packages is after system installation, see Packages installation)
 # ./alis.sh               # Start installation
 # ./alis-reboot.sh        # (Optional) Reboot the system, only necessary when REBOOT="false"
