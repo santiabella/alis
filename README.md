@@ -11,9 +11,3 @@ curl -sL https://raw.githubusercontent.com/santiabella/alis/master/download.sh |
 nano alis.conf
 
 ./alis.sh
-
-If you fork _alis_ repository you can host your own configuration and changes in your repository.
-
-
-curl https://raw.githubusercontent.com/santiabella/alis/master/download.sh | bash -s -- -u [github user]
-
