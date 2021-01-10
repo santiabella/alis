@@ -586,7 +586,7 @@ function partition() {
         btrfs subvolume create /mnt/@snapshots
         umount /mnt
 
-        mount -o "subvol=root,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
+        mount -o "subvol=@root,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
         mkdir /mnt/{boot,@home,@var,@snapshots}
         mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
