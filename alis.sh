@@ -580,19 +580,15 @@ function partition() {
     # mount
     if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
         mount -o "$PARTITION_OPTIONS" "$DEVICE_ROOT" /mnt
-        btrfs subvolume create /mnt/root
-        btrfs subvolume create /mnt/home
-        btrfs subvolume create /mnt/var
-        btrfs subvolume create /mnt/snapshots
+        btrfs subvolume create /mnt/@
+        btrfs subvolume create /mnt/@home
         umount /mnt
 
-        mount -o "subvol=root,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
+        mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{boot,home,var,snapshots}
+        mkdir /mnt/{boot,home}
         mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
-        mount -o "subvol=home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
-        mount -o "subvol=var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
-        mount -o "subvol=snapshots,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/snapshots
+        mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
