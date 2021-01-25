@@ -1142,7 +1142,7 @@ function bootloader() {
         CMDLINE_LINUX="cryptdevice=PARTUUID=$PARTUUID_ROOT:$LUKS_DEVICE_NAME$BOOTLOADER_ALLOW_DISCARDS"
     fi
     if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
-        CMDLINE_LINUX="$CMDLINE_LINUX rootflags=subvol=/@"
+        CMDLINE_LINUX="$CMDLINE_LINUX rootflags=subvol=@"
     fi
     if [ "$KMS" == "true" ]; then
         case "$DISPLAY_DRIVER" in
