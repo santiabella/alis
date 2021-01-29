@@ -329,8 +329,8 @@ function configure_time() {
 }
 
 function prepare_partition() {
-    if [ -d /mnt/boot/efi ]; then
-        umount /mnt/boot/efi
+    if [ -d /mnt/boot ]; then
+        umount /mnt/boot
         umount /mnt
     fi
     if [ -e "/dev/mapper/$LVM_VOLUME_GROUP-$LVM_VOLUME_LOGICAL" ]; then
@@ -587,15 +587,15 @@ function partition() {
 
         mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{efi,home,var}
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/efi
+        mkdir /mnt/{boot,home,var}
+        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
         mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot/efi
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/efi
+        mkdir /mnt/boot
+        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
     fi
 
     # swap
@@ -611,9 +611,8 @@ function partition() {
         mkswap /mnt$SWAPFILE
     fi
 
-    # set variables
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/efi
+    ESP_DIRECTORY=/boot
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
