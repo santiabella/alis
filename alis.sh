@@ -611,8 +611,8 @@ function partition() {
         mkswap /mnt$SWAPFILE
     fi
 
-    BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot
+    BOOT_DIRECTORY=/
+    ESP_DIRECTORY=/boot/efi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
