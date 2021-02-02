@@ -329,7 +329,7 @@ function configure_time() {
 }
 
 function prepare_partition() {
-    if [ -d /mnt/EFI ]; then
+    if [ -d /mnt/boot/EFI ]; then
         umount /mnt/boot/EFI
         umount /mnt
     fi
