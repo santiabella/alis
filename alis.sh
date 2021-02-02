@@ -587,7 +587,7 @@ function partition() {
 
         mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{EFI,home,var}
+        mkdir /mnt/{boot/EFI,home,var}
         mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
         mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
