@@ -329,8 +329,8 @@ function configure_time() {
 }
 
 function prepare_partition() {
-    if [ -d /mnt/boot/efi ]; then
-        umount /mnt/boot/efi
+    if [ -d /mnt/boot/EFI ]; then
+        umount /mnt/boot/EFI
         umount /mnt
     fi
     if [ -e "/dev/mapper/$LVM_VOLUME_GROUP-$LVM_VOLUME_LOGICAL" ]; then
@@ -594,8 +594,8 @@ function partition() {
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot/efi
-        mount -o "$PARTITION_OPTIONS_BOOT" /boot/efi /mnt
+        mkdir /mnt/boot/EFI
+        mount -o "$PARTITION_OPTIONS_BOOT" "$DEVICE_BOOT" /mnt
 
     fi
 
@@ -612,8 +612,8 @@ function partition() {
         mkswap /mnt$SWAPFILE
     fi
 
-    BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/efi
+    BOOT_DIRECTORY=/boot/EFI
+    ESP_DIRECTORY=/boot/EFI
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
