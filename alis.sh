@@ -595,7 +595,8 @@ function partition() {
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
         mkdir /mnt/boot/EFI
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/EFI
+        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt
+
     fi
 
     # swap
