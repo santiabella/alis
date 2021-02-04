@@ -612,7 +612,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/efi
+    ESP_DIRECTORY=$PARTITION_BOOT
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
