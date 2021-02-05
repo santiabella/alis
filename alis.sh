@@ -594,8 +594,8 @@ function partition() {
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot/efi
-        mount -o "$PARTITION_BOOT" /mnt/boot/efi
+        mkdir -o /mnt/boot/efi
+        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/efi
 	
     fi
 
@@ -613,7 +613,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/efi
+    ESP_DIRECTORY=esp
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
