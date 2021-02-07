@@ -329,8 +329,8 @@ function configure_time() {
 }
 
 function prepare_partition() {
-    if [ -d /mnt/boot/EFI ]; then
-        umount /mnt/boot/EFI
+    if [ -d /mnt/boot ]; then
+        umount /mnt/boot
         umount /mnt
     fi
     if [ -e "/dev/mapper/$LVM_VOLUME_GROUP-$LVM_VOLUME_LOGICAL" ]; then
@@ -437,8 +437,8 @@ function partition() {
         if [ "$PARTITION_PARTED_FILE_SYSTEM_TYPE" == "f2fs" ]; then
             PARTITION_PARTED_FILE_SYSTEM_TYPE=""
         fi
-        PARTITION_PARTED_UEFI="mklabel gpt mkpart ESP fat32 1MiB 300MiB mkpart root $PARTITION_PARTED_FILE_SYSTEM_TYPE 300MiB 100% set 1 esp on"
-        PARTITION_PARTED_BIOS="mklabel msdos mkpart primary ext4 4MiB 512MiB mkpart primary $PARTITION_PARTED_FILE_SYSTEM_TYPE 512MiB 100% set 1 boot on"
+        PARTITION_PARTED_UEFI="mklabel gpt mkpart ESP fat32 1MiB 301MiB mkpart root $PARTITION_PARTED_FILE_SYSTEM_TYPE 300MiB 100% set 1 esp on"
+        PARTITION_PARTED_BIOS="mklabel msdos mkpart primary ext4 4MiB 301MiB mkpart primary $PARTITION_PARTED_FILE_SYSTEM_TYPE 301MiB 100% set 1 boot on"
 
         if [ "$BIOS_TYPE" == "uefi" ]; then
             if [ "$DEVICE_SATA" == "true" ]; then
@@ -525,7 +525,7 @@ function partition() {
 
     # luks and lvm
     if [ -n "$LUKS_PASSWORD" ]; then
-        echo -n "$LUKS_PASSWORD" | cryptsetup --key-size=512 --key-file=- luksFormat --type luks2 $PARTITION_ROOT
+        echo -n "$LUKS_PASSWORD" | cryptsetup --key-size=301 --key-file=- luksFormat --type luks2 $PARTITION_ROOT
         echo -n "$LUKS_PASSWORD" | cryptsetup --key-file=- open $PARTITION_ROOT $LUKS_DEVICE_NAME
         sleep 5
     fi
@@ -587,15 +587,15 @@ function partition() {
 
         mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{boot,home,var}
-        mount -o "$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/boot
+        mkdir /mnt/{home,var}
+        
         mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot/EFI
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/EFI
+        mkdir /mnt/efi
+        mount -o "$PARTITION_BOOT" /mnt/efi
     fi
 
     # swap
@@ -612,7 +612,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/EFI
+    ESP_DIRECTORY=/efi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
