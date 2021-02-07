@@ -594,8 +594,8 @@ function partition() {
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/efi
-        mount -o "$PARTITION_BOOT" /mnt/efi
+        mkdir /mnt/boot/efi
+        mount /dev/sda1 /boot/efi
     fi
 
     # swap
@@ -612,7 +612,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/efi
+    ESP_DIRECTORY=/boot/efi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
@@ -1183,7 +1183,11 @@ function bootloader_grub() {
 
     if [ "$BIOS_TYPE" == "uefi" ]; then
         pacman_install "efibootmgr"
-        arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub --efi-directory=$ESP_DIRECTORY --recheck
+	mount /dev/sda1 /boot/efi
+	genfstab -U > /etc/fstab
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
+        grub-mkconfig -o /boot/grub/grub.cfg 
+        #arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub --efi-directory=$ESP_DIRECTORY --recheck
         #arch-chroot /mnt efibootmgr --create --disk $DEVICE --part $PARTITION_BOOT_NUMBER --loader /EFI/grub/grubx64.efi --label "GRUB Boot Manager"
     fi
     if [ "$BIOS_TYPE" == "bios" ]; then
