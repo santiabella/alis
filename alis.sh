@@ -587,12 +587,14 @@ function partition() {
 
         mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{boot/EFI,home,var}
-        mount -o "$PARTITION_BOOT" /mnt/boot/EFI
+        mkdir /mnt/{home,var}
+        
         mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
+	mkdir -o /mnt/boot/efi
+	mount -o "$PARTITION_BOOT" /mnt/boot/efi
 
        
     fi
@@ -611,7 +613,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot/EFI
+    ESP_DIRECTORY=/boot/efi
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
