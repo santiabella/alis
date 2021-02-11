@@ -1684,7 +1684,7 @@ function copy_logs() {
 }
 
 function do_reboot() {
-    umount -R /mnt/boot
+    umount -R /mnt/boot/EFI
     umount -R /mnt
     reboot
 }
