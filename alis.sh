@@ -1294,7 +1294,7 @@ EOT
 
 function bootloader_systemd() {
     arch-chroot /mnt systemd-machine-id-setup
-    arch-chroot /mnt bootctl --path="$ESP_DIRECTORY" install
+    arch-chroot /mnt bootctl --path="$BOOT_DIRECTORY" install
 
     arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/"
     arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/entries/"
