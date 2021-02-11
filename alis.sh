@@ -587,15 +587,14 @@ function partition() {
 
         mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/{boot,home,var}
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
+        mkdir /mnt/{EFI,home,var}
+        mount -o "$PARTITION_BOOT" /mnt/boot/EFI
         mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
 
-        mkdir /mnt/boot
-        mount -o "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot
+        
     fi
 
     # swap
@@ -612,7 +611,7 @@ function partition() {
     fi
 
     BOOT_DIRECTORY=/boot
-    ESP_DIRECTORY=/boot
+    ESP_DIRECTORY=/boot/EFI
     UUID_BOOT=$(blkid -s UUID -o value $PARTITION_BOOT)
     UUID_ROOT=$(blkid -s UUID -o value $PARTITION_ROOT)
     PARTUUID_BOOT=$(blkid -s PARTUUID -o value $PARTITION_BOOT)
@@ -1298,10 +1297,10 @@ function bootloader_systemd() {
     arch-chroot /mnt systemd-machine-id-setup
     arch-chroot /mnt bootctl --path="$ESP_DIRECTORY" install
 
-    arch-chroot /mnt mkdir -p "$ESP_DIRECTORY/loader/"
-    arch-chroot /mnt mkdir -p "$ESP_DIRECTORY/loader/entries/"
+    arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/"
+    arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/entries/"
 
-    cat <<EOT > "/mnt$ESP_DIRECTORY/loader/loader.conf"
+    cat <<EOT > "/mnt$BOOT_DIRECTORY/loader/loader.conf"
 # alis
 timeout 5
 default archlinux
