@@ -6,7 +6,7 @@ set -e
 # Copyright (C) 2021 picodotdev
 
 function do_reboot() {
-    umount -R /mnt/boot
+    umount -R /mnt/boot/EFI
     umount -R /mnt
     reboot
 }
