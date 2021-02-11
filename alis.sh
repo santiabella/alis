@@ -1171,7 +1171,7 @@ function bootloader() {
 }
 
 function bootloader_grub() {
-    pacman_install "grub dosfstools"
+    pacman_install "grub dosfstools os-prober"
     arch-chroot /mnt sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=0/' /etc/default/grub
     arch-chroot /mnt sed -i 's/#GRUB_SAVEDEFAULT="false"/GRUB_SAVEDEFAULT="false"/' /etc/default/grub
     arch-chroot /mnt sed -i -E 's/GRUB_CMDLINE_LINUX_DEFAULT="(.*) quiet"/GRUB_CMDLINE_LINUX_DEFAULT="\1"/' /etc/default/grub
@@ -1520,7 +1520,7 @@ function desktop_environment() {
 }
 
 function desktop_environment_gnome() {
-    pacman_install "gnome ntfs-3g gnome-tweaks gnome-software-packagekit-plugin bluez-utils unrar unzip p7zip neofetch pacman-contrib reflector xf86-input-synaptics gst-libav gstreamer-vaapi gst-plugins-ugly chrome-gnome-shell os-prober"
+    pacman_install "gnome ntfs-3g gnome-tweaks gnome-software-packagekit-plugin bluez-utils unrar unzip p7zip neofetch pacman-contrib reflector xf86-input-synaptics gst-libav gstreamer-vaapi gst-plugins-ugly chrome-gnome-shell nano"
     arch-chroot /mnt systemctl enable gdm.service
 }
 
