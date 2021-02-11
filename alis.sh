@@ -329,8 +329,8 @@ function configure_time() {
 }
 
 function prepare_partition() {
-    if [ -d /mnt/boot ]; then
-        umount /mnt/boot
+    if [ -d /mnt/boot/EFI ]; then
+        umount /mnt/boot/EFI
         umount /mnt
     fi
     if [ -e "/dev/mapper/$LVM_VOLUME_GROUP-$LVM_VOLUME_LOGICAL" ]; then
@@ -586,7 +586,7 @@ function partition() {
         umount /mnt
 	mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
         
-        mkdir /mnt/{boot,home,var}
+        mkdir /mnt/{home,var}
 	mkdir /mnt/boot/EFI
         mount "$PARTITION_BOOT" /mnt/boot/EFI
 	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
