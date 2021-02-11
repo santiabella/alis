@@ -587,12 +587,13 @@ function partition() {
 	mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
         
         mkdir /mnt/{boot,home,var}
+	mkdir /mnt/boot/EFI
+        mount "$PARTITION_BOOT" /mnt/boot/EFI
 	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
-        mkdir /mnt/boot/EFI
-        mount "$PARTITION_OPTIONS_BOOT" "$PARTITION_BOOT" /mnt/boot/EFI
+       
         
     fi
 
@@ -1294,7 +1295,7 @@ EOT
 
 function bootloader_systemd() {
     arch-chroot /mnt systemd-machine-id-setup
-    arch-chroot /mnt bootctl --path="$BOOT_DIRECTORY" install
+    arch-chroot /mnt bootctl --path="$ESP_DIRECTORY" install
 
     arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/"
     arch-chroot /mnt mkdir -p "$BOOT_DIRECTORY/loader/entries/"
