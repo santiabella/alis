@@ -1520,7 +1520,7 @@ function desktop_environment() {
 }
 
 function desktop_environment_gnome() {
-    pacman_install "gnome"
+    pacman_install "gnome ntfs-3g gnome-tweaks gnome-software-packagekit-plugin bluez-utils unrar unzip p7zip neofetch pacman-contrib reflector xf86-input-synaptics gst-libav gstreamer-vaapi gst-plugins-ugly chrome-gnome-shell os-prober"
     arch-chroot /mnt systemctl enable gdm.service
 }
 
