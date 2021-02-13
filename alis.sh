@@ -437,7 +437,7 @@ function partition() {
         if [ "$PARTITION_PARTED_FILE_SYSTEM_TYPE" == "f2fs" ]; then
             PARTITION_PARTED_FILE_SYSTEM_TYPE=""
         fi
-        PARTITION_PARTED_UEFI="mklabel gpt mkpart ESP fat32 1MiB 301MiB mkpart root $PARTITION_PARTED_FILE_SYSTEM_TYPE 301MiB 100% set 1 esp on"
+        PARTITION_PARTED_UEFI="mklabel gpt mkpart ESP fat32 1MiB 301MiB mkpart root $PARTITION_PARTED_FILE_SYSTEM_TYPE 301MiB -20781MiB mkpart home $PARTITION_PARTED_FILE_SYSTEM_TYPE 20781MiB 100% set 1 esp on"
         PARTITION_PARTED_BIOS="mklabel msdos mkpart primary ext4 4MiB 301MiB mkpart primary $PARTITION_PARTED_FILE_SYSTEM_TYPE 301MiB 100% set 1 boot on"
 
         if [ "$BIOS_TYPE" == "uefi" ]; then
@@ -581,7 +581,7 @@ function partition() {
     if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
         mount -o "$PARTITION_OPTIONS" "$DEVICE_ROOT" /mnt
         btrfs subvolume create /mnt/@
-        btrfs subvolume create /mnt/@home
+        
 	btrfs subvolume create /mnt/@var
         umount /mnt
 	mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
@@ -589,7 +589,7 @@ function partition() {
         mkdir /mnt/{boot,home,var}
 	mkdir /mnt/boot/efi
         mount "$PARTITION_BOOT" /mnt/boot/efi
-	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
+	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" sda3 /mnt/home
         mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
