@@ -582,15 +582,15 @@ function partition() {
         mount -o "$PARTITION_OPTIONS" "$DEVICE_ROOT" /mnt
         btrfs subvolume create /mnt/@
         btrfs subvolume create /mnt/@home
-	btrfs subvolume create /mnt/var/lib/machines
+	btrfs subvolume create /mnt/@var
         umount /mnt
 	mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
         
-        mkdir /mnt/{boot,home}
+        mkdir /mnt/{boot,home,var}
 	mkdir /mnt/boot/efi
         mount "$PARTITION_BOOT" /mnt/boot/efi
 	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/home
-        
+        mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
        
