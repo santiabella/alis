@@ -580,11 +580,11 @@ function partition() {
    # mount
     if [ "$FILE_SYSTEM_TYPE" == "btrfs" ]; then
         mount -o "$PARTITION_OPTIONS" "$DEVICE_ROOT" /mnt
-        btrfs subvolume create /mnt/@root
+        btrfs subvolume create /mnt/@
         btrfs subvolume create /mnt/@home
 	btrfs subvolume create /mnt/var/lib/machines
         umount /mnt
-	mount -o "subvol=@root,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
+	mount -o "subvol=@,$PARTITION_OPTIONS,compress=zstd" "$DEVICE_ROOT" /mnt
         
         mkdir /mnt/{boot,home}
 	mkdir /mnt/boot/efi
