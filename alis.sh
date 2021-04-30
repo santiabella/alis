@@ -630,7 +630,8 @@ function install() {
             COUNTRIES+=(--country "${COUNTRY}")
         done
         pacman -Sy --noconfirm reflector
-        reflector "${COUNTRIES[@]}" --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+	reflector --country France --country Germany --verbose --latest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+        #reflector "${COUNTRIES[@]}" --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
     fi
 
     sed -i 's/#Color/Color/' /etc/pacman.conf
