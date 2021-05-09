@@ -589,8 +589,8 @@ function partition() {
         mkdir /mnt/{boot,home,var}
 	mkdir /mnt/boot/efi
         mount "$PARTITION_BOOT" /mnt/boot/efi
-	#mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd:1" "$DEVICE_ROOT" /mnt/home
-        #mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd:1" "$DEVICE_ROOT" /mnt/var
+	mount -o "subvol=@home,$PARTITION_OPTIONS_ROOT,compress=zstd:1" "$DEVICE_ROOT" /mnt/home
+        mount -o "subvol=@var,$PARTITION_OPTIONS_ROOT,compress=zstd:1" "$DEVICE_ROOT" /mnt/var
     else
         mount -o "$PARTITION_OPTIONS_ROOT" "$DEVICE_ROOT" /mnt
        
@@ -1183,7 +1183,7 @@ function bootloader_grub() {
 
     if [ "$BIOS_TYPE" == "uefi" ]; then
         pacman_install "efibootmgr"
-        arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=Arch-Linux --efi-directory=$ESP_DIRECTORY --recheck
+        arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=Arch --efi-directory=$ESP_DIRECTORY --recheck
         #arch-chroot /mnt efibootmgr --create --disk $DEVICE --part $PARTITION_BOOT_NUMBER --loader /EFI/grub/grubx64.efi --label "GRUB Boot Manager"
     fi
     if [ "$BIOS_TYPE" == "bios" ]; then
